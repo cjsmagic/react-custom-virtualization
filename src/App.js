@@ -2,9 +2,7 @@ import React from 'react';
 import './style.css';
 import VirtualList from './VirtualList';
 
-const items = new Array(1000000)
-  .fill(null)
-  .map((_, index) => `item_${index + 1}`);
+const items = new Array(100).fill(null).map((_, index) => `item_${index + 1}`);
 
 const renderItem = ({ item, index }) => (
   <div
