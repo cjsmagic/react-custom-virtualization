@@ -2,7 +2,7 @@ import React from 'react';
 import './style.css';
 import VirtualList from './VirtualList';
 
-const items = new Array(100000)
+const items = new Array(1000000)
   .fill(null)
   .map((_, index) => `item_${index + 1}`);
 
@@ -13,7 +13,8 @@ const renderItem = ({ item, index }) => (
       height: '50px',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      cursor: 'pointer'
     }}
     onClick={() => console.log(item)}
   >
