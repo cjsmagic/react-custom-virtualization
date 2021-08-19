@@ -1,0 +1,22 @@
+h1,
+p {
+  font-family: Lato;
+}
+
+.virtual-list {
+  overflow: auto;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.virtual-list__scroll {
+  overflow: auto;
+}
+
+.virtual-list__item {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+}
