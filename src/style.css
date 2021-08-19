@@ -15,8 +15,8 @@ p {
 }
 
 .virtual-list__item {
-  border: 1px solid #000;
   box-sizing: border-box;
   position: absolute;
   width: 100%;
+  border: 1px solid #000;
 }

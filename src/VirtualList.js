@@ -15,16 +15,11 @@ function VirtualList({ items, renderItem, height, rowSize }) {
     currentIndex: 0,
     scrollTop: 0
   });
-
   const { currentIndex, scrollTop } = state;
 
-  const data = useRef({
-    oldIndex: 0
-  });
-
   const rows = useMemo(() => {
-    const itemsInWindow = Math.ceil(height / rowSize);
-    return new Array(itemsInWindow).fill(null).map((_, index) => {
+    return new Array(Math.ceil(height / rowSize)).fill(null).map((_, index) => {
+      // this should give us item based on array index and currentIndex
       const item = items[index + currentIndex];
       return (
         <div
@@ -42,12 +37,18 @@ function VirtualList({ items, renderItem, height, rowSize }) {
   }, [height, rowSize, items, scrollTop, currentIndex]);
 
   useLayoutEffect(() => {
+    let oldIndex = 0;
+
     const scrollEventHandler = e => {
+      /* 
+      a single scroll should cross 50px to make on scroll unit of 1,
+      when scrollTop = 50, and rowSize = 50, 50/50 should equal to 1, this will tell us the current index, also we got to avoid calculating for same index due to extra events fired
+      */
       const _currentIndex = Math.ceil(e.target.scrollTop / rowSize);
-      if (data.current.oldIndex === _currentIndex) {
+      if (oldIndex === _currentIndex) {
         return;
       }
-      data.current.oldIndex = _currentIndex;
+      oldIndex = _currentIndex;
 
       setState(prev => ({
         ...prev,
@@ -55,22 +56,23 @@ function VirtualList({ items, renderItem, height, rowSize }) {
         scrollTop: e.target.scrollTop
       }));
     };
-    if ((ref.current, data.current)) {
+
+    if (ref.current) {
+      ref.current.style.height = `${height}px`;
+      ref.current.querySelector(
+        '.virtual-list__scroll'
+      ).style.minHeight = `${rowSize * items.length - rowSize}px`;
       ref.current.addEventListener('scroll', scrollEventHandler);
     }
+
     return () => {
       ref.current.removeEventListener('scroll', scrollEventHandler);
     };
   }, [ref.current, setState]);
 
   return (
-    <div className="virtual-list" style={{ height: `${height}px` }} ref={ref}>
-      <div
-        className="virtual-list__scroll"
-        style={{ minHeight: `${rowSize * items.length - rowSize}px` }}
-      >
-        {rows}
-      </div>
+    <div className="virtual-list" ref={ref}>
+      <div className="virtual-list__scroll">{rows}</div>
     </div>
   );
 }
