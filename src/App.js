@@ -4,7 +4,20 @@ import VirtualList from './VirtualList';
 
 const items = new Array(100).fill(null).map((_, index) => `item_${index + 1}`);
 
-const renderItem = item => <div>{item}</div>;
+const renderItem = ({ item, index }) => (
+  <div
+    style={{
+      background: index % 2 === 0 ? 'lightblue' : 'lightgreen',
+      height: '100px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+    onClick={() => console.log(item)}
+  >
+    {item}
+  </div>
+);
 
 export default function App() {
   return (
@@ -14,8 +27,8 @@ export default function App() {
       <VirtualList
         items={items}
         renderItem={renderItem}
-        height={250}
-        rowSize={50}
+        height={400}
+        rowSize={100}
       />
     </div>
   );
